@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tests JSON</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/header.css">
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <span class="brand-icon" aria-hidden="true">E</span>
+                <div>
+                    <h1>Gestor de exámenes</h1>
+                    <p>Crea, edita y exporta tus cuestionarios</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <label class="header-action">
+                    <i class="fa-solid fa-upload" aria-hidden="true"></i> Importar JSON
+                    <input type="file" id="importFile" accept=".json" class="header-file-input">
+                </label>
+                <button type="button" data-new class="header-action header-action-primary">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo Test
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
+
+        <p role="status" class="mb-4 text-sm text-slate-600">Catálogo de data y borradores locales. Guardar conserva una copia en este navegador. Para publicar, exporta el JSON al directorio data del repositorio.</p>
+        <!-- Vista de Listado de Tests -->
+        <div id="listView">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-slate-700">Tests Disponibles</h2>
+                <span id="testCount"
+                    class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full">0 tests</span>
+            </div>
+
+            <div id="testGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Se rellena dinámicamente -->
+            </div>
+
+            <div id="emptyState"
+                class="hidden text-center py-16 bg-white rounded-xl border border-dashed border-slate-300 shadow-sm mt-4">
+                <i class="fa-solid fa-folder-open text-slate-300 text-5xl mb-3"></i>
+                <h3 class="text-lg font-medium text-slate-600">No hay tests creados</h3>
+                <p class="text-slate-400 text-sm mt-1">Empieza creando uno nuevo o importando un fichero JSON.</p>
+            </div>
+        </div>
+
+        <!-- Vista de Editor (Oculta por defecto) -->
+        <div id="editorView" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 p-6 md:p-8">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-6">
+                <h2 id="editorTitle" class="text-xl font-bold text-slate-800">Editar Test</h2>
+                <button data-back
+                    class="text-slate-500 hover:text-slate-700 font-medium text-sm flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-left"></i> Volver
+                </button>
+            </div>
+
+            <form id="testForm"  class="space-y-6">
+                <!-- Información General del Test -->
+                <div class="grid grid-cols-1 gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <h3 class="font-semibold text-slate-700 text-sm uppercase tracking-wider">Información General</h3>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Título del Test</label>
+                        <input type="text" id="testTitulo" required
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Descripción</label>
+                        <textarea id="testDescripcion" rows="2"
+                            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm"></textarea>
+                    </div>
+                </div>
+
+                <!-- Preguntas -->
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-slate-700 text-sm uppercase tracking-wider">Preguntas del Test
+                        </h3>
+                        <button type="button" data-add
+                            class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 border border-indigo-200">
+                            <i class="fa-solid fa-plus"></i> Añadir Pregunta
+                        </button>
+                    </div>
+
+                    <div id="preguntasContainer" class="space-y-6">
+                        <!-- Las preguntas se inyectan aquí -->
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                    <button type="button" data-back
+                        class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-100 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition shadow flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar Test
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+        Gestor de Cuestionarios JSON &bull; Compatible con estructura estándar
+    </footer>
+
+    <!-- Script de lógica de la aplicación -->
+    <script src="./assets/js/catalog.js"></script>
+    <script src="./assets/js/admin.js"></script>
+</body>
+
+</html>
