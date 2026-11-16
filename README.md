@@ -1,6 +1,6 @@
 # TestPlatform
 
-[https://cristiangitrepo.github.io/TestPlatform/](https://cristiangitrepo.github.io/ForEmpregoTests/)
+[ForEmprego Test Platform/](https://cristiangitrepo.github.io/ForEmpregoTests/)
 
 ## Catálogo de exámenes
 
