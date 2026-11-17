@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Estado de la aplicación
     let currentExamData = null;
+    let originalExamData = null;
     let currentQuestionIndex = 0;
     let userAnswers = {}; // Almacena la opción seleccionada por índice de pregunta: { 0: optionId, 1: optionId, ... }
     let isReviewMode = false;
@@ -91,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideError();
         try {
             currentExamData = exams.get(fileName);
+            originalExamData = currentExamData;
             if (!currentExamData) throw new Error('Examen no disponible.');
             initExam();
         } catch (error) {
@@ -100,6 +102,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Mezcla aleatoriamente los elementos de un array (Fisher-Yates)
+    function shuffleArray(array) {
+        const shuffled = array.slice();
+
+        for (let i = shuffled.length - 1; i > 0; i--)
+        {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        return shuffled;
+    }
+
+
+
+
     function initExam() {
         currentQuestionIndex = 0;
         userAnswers = {};
@@ -108,6 +126,15 @@ document.addEventListener('DOMContentLoaded', () => {
         examTitle.textContent = currentExamData.titulo;
         examDescription.textContent = currentExamData.descripcion || '';
         totalQuestionsEl.textContent = currentExamData.preguntas.length;
+
+        // Función auxiliar para barajar sin mutar el array original (inmutable)
+        const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+
+        // Aleatorizar preguntas y opciones de forma segura
+        currentExamData.preguntas = shuffleArray(currentExamData.preguntas).map(question => ({
+            ...question,
+            opciones: shuffleArray(question.opciones)
+        }));
 
         document.querySelector('.exam-selector').hidden = true;
         resultPanel.hidden = true;

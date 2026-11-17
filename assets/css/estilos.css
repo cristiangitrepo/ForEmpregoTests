@@ -170,18 +170,6 @@ select {
     right: -25px;
 }
 
-.question-counter::after {
-    content: "";
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #20b486;
-    border-radius: 50%;
-    top: 12px;
-    right: 13px;
-    box-shadow: 0 0 10px rgba(32, 180, 134, .4);
-}
-
 .question-counter>span {
     display: block;
     position: relative;
@@ -529,7 +517,7 @@ select {
         0 6px 18px rgba(75, 90, 140, .10),
         0 0 0 3px color-mix(in srgb, var(--option-color) 13%, transparent);
 
-    animation: selectedPop .35s ease;
+    /* animation: selectedPop .35s ease; */
 }
 
 .option-card:not(.correct-option):not(.incorrect-option):has(input:checked)::before {
@@ -933,6 +921,8 @@ select {
 
     .exam-navigation {
         flex-wrap: wrap;
+        position: fixed;
+        margin: 60vh 0 0 -30px;
     }
 
     .answered-info {
